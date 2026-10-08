@@ -25,3 +25,9 @@ pip freeze > requirements.txt
 git add .
 git commit -m "初回コミット"
 ```
+
+## Git Clone
+githubから最新のリポジトリを取得
+
+```
+git clone [リポジトリのURL]
