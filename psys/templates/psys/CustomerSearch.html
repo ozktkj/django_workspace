@@ -7,8 +7,33 @@
 {% block content %}
 <h2>得意先検索</h2>
 <form action="" method="post">
+    {% csrf_token %}
     <label for="seartch_id">得意先コード</label>
     <input type="text" name="seartch_id" id="seartch_id">
     <button type="submit" class="btn btn-primary btn-sm">検索</button> 
 </form>
+{% if seartch_id %}
+<table class="table">
+    <tr>
+        <th>得意先コード</th>
+        <td>{{seartch_id}}</td>
+    </tr>
+    <tr>
+        <th>得意先名</th>
+        <td>{{customer_name}}</td>
+    </tr>
+    <tr>
+        <th>電話番号</th>
+        <td>{{customer_telno}}</td>
+    </tr>
+    <tr>
+        <th>郵便番号</th>
+        <td>{{customer_postalcode}}</td>
+    </tr>
+    <tr>
+        <th>住所</th>
+        <td>{{customer_address}}</td>
+    </tr>
+</table>
+{% endif %}
 {% endblock %}
