@@ -4,5 +4,5 @@ from . import views
 app_name = 'psys'
 
 urlpatterns = [
-    path('CustomerSerch',views.CustomerSearch,name='CustomerSearch')
+    path('CustomerSearch',views.CustomerSearch,name='CustomerSearch')
 ]
