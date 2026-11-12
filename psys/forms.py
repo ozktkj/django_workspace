@@ -1,4 +1,5 @@
 from django import forms
+from .models import Employee
 
 class CustomerSearchForm(forms.Form):
     customer_code = forms.CharField(
@@ -17,3 +18,19 @@ class CustomerSearchForm(forms.Form):
         if not code:
             raise forms.ValidationError("顧客コードを入力してください")
         return code
+
+class LoginForm(forms.Form):
+    employee_no = forms.CharField(
+        label="従業員番号",
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': '従業員番号を入力'
+        })
+    )
+    password = forms.CharField(
+        label="パスワード",
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'パスワードを入力'
+        })
+    )

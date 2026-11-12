@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <title></title>
+    <title>管理システム</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-xl navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">{% block title %}{% endblock %}</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" href="#">管理システム</a>
+        <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse show" id="navbarText">
@@ -23,12 +23,13 @@
             </li>
         </ul>
         <span class="navbar-text">
-           <button class="btn btn-danger btn-sm">ログアウト</button>
+           <span></span>
         </span>
-        </div>
+        </div> -->
     </div>
     </nav>
     <div class="container">
+        <h1 class="h3">{% block title %}{% endblock %}</h1>
         {% block content %}
         <!-- 子テンプレートで上書きされるデフォルトの内容 -->
         {% endblock %}
