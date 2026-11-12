@@ -31,8 +31,12 @@
     <div class="container">
         <h1 class="h3">{% block title %}{% endblock %}</h1>
         {% block content %}
-        <!-- 子テンプレートで上書きされるデフォルトの内容 -->
         {% endblock %}
+        {% if employee_no %}
+        <div>
+            <a href="{% url 'psys:logout' %}">ログアウト</a>
+        </div>
+        {% endif %}
     </div>
     
 </body>

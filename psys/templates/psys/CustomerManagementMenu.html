@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}
+管理管理メニュー
+{% endblock %}
+
+{% block content %}
+    <div>
+        <a href="#" class="btn btn-sm btn-outline-primary">得意先一覧</a>
+    </div>
+    <div>
+        <a href="{% url 'psys:CustomerSearch'}" class="btn btn-sm btn-outline-primary">得意先検索</a>
+    </div>
+    <div>
+        <a href="#" class="btn btn-sm btn-outline-primary">得意先登録</a>
+    </div>
+    <div>
+        <a href="#" class="btn btn-sm btn-outline-primary">得意先削除</a>
+    </div>
+    <div>
+        <a href="#" class="btn btn-sm btn-outline-primary">得意先登録</a>
+    </div>
+    <div>
+        <a href="#" class="btn btn-sm btn-outline-primary">得意先更新</a>
+    </div>
+
+    <a href="{% url 'psys:main_menu' %}" class="btn btn-sm btn-outline-info">管理メニュー</a>
+    
+{% endblock %}

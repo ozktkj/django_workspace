@@ -1,14 +1,29 @@
 from django.shortcuts import render,redirect
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
+from functools import wraps
 from .forms import CustomerSearchForm,LoginForm
 from .models import Customer,Employee
+
+# ログインチェック関数
+def employee_auth_required(view_func):
+    @wraps(view_func)
+    def wrapper(request,*args,**kwargs):
+        if not request.session.get("employee_no"):
+            return redirect("psys:login")
+        return view_func(request,*args,**kwargs)
+    return wrapper
 
 def index(request):
     return render(request,"psys/index.html")
 
+@employee_auth_required
 def MainMenu(request):
     return render(request,"psys/MainMenu.html")
+
+@employee_auth_required
+def CustomerManagementMenu(request):
+    return render(request, "psys/CustomerManagementMenu.html")
 
 def login(request):
     if request.method == 'POST':
@@ -55,6 +70,7 @@ def login(request):
         }
         return render(request, 'psys/login.html', context)
 
+@employee_auth_required
 def CustomerSearch(request):
     customer = None
     error_message = None
@@ -92,3 +108,8 @@ def CustomerSearch(request):
     }
         
     return render(request,"psys/CustomerSearch.html",context)
+
+# 確認用簡易ログアウト
+def logout(request):
+    request.session.flush()
+    return redirect("psys:login")
