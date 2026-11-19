@@ -16,18 +16,18 @@ echo MySQL Backup Start....
     --triggers ^
     --events ^
     --hex-blob ^
-    --result-file="%BACKUP%\psysdb3.tmp"
+    --result-file="%BACKUP%\%DB%.tmp"
 
 echo GET
 
 if errorlevel 1 (
     echo ERROR: Backup failed.
-    del "%BACKUP%\psysdb3.tmp"
+    del "%BACKUP%\%DB%.tmp"
     pause
     exit /b 1
 )
 
-move /Y "%BACKUP%\psysdb3.tmp" "%BACKUP%\psysdb3.sql"
+move /Y "%BACKUP%\%DB%.tmp" "%BACKUP%\%DB%.sql"
 
 echo Backup completed.
 pause
