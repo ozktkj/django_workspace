@@ -22,8 +22,9 @@ class Customer(models.Model):
         db_table = 'customer'
 
 
+# ORM対策のためprimary_key=Trueを追加
 class CustomerNumbering(models.Model):
-    customer_code = models.IntegerField()
+    customer_code = models.IntegerField(primary_key=True)
 
     class Meta:
         managed = False

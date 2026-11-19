@@ -3,3 +3,4 @@
 */__pycache__/*
 psys/migrations/__pycache__/*
 .pat
+mysql_backup/psysdb3.sql
