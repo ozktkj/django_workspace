@@ -33,11 +33,11 @@ def login(request):
             password = form.cleaned_data['password']
 
             login_failed = False
-            try:
-                # 従業員番号でレコードを検索
-                employee = Employee.objects.get(employee_no=employee_no)
-                
-                # パスワードの比較
+
+            # getで取得すると例外が発生するためfilterで取得、employee_noはPKだがQuerySetから先頭を取得
+            employee = Employee.objects.filter(employee_no=employee_no).first()
+
+            if employee:
                 if employee.password != password:
                     login_failed = True
                 else:
@@ -45,10 +45,10 @@ def login(request):
                     request.session['employee_no'] = employee.employee_no
                     request.session['employee_name'] = employee.employee_name
                     return redirect('psys:main_menu')
-                    
-            except Employee.DoesNotExist:
+            else:
                 # ユーザーが存在しない場合もフラグを立てる
                 login_failed = True
+
 
             if login_failed:
                 # PRGパターン: エラー文言をセッションに格納してGETリクエストへ飛ばす
@@ -63,7 +63,7 @@ def login(request):
         # GETリクエスト時：セッションからエラーメッセージを取り出して1回だけ表示（ポップ）
         form = LoginForm()
         error_message = request.session.pop('login_error', None)
-        
+
         context = {
             'form': form,
             'error_message': error_message
@@ -84,12 +84,12 @@ def CustomerSearch(request):
             #sessionにseartch_idを格納
             request.session["seartch_customer_code"] = code
             #redirect
-            return redirect('psys:CustomerSearch')    
+            return redirect('psys:CustomerSearch')
         # バリデーションエラー
         else:
             errors = form.errors.get('customer_code')
             if errors:
-                error_message = errors[0]    
+                error_message = errors[0]
     else:
         # セッションから顧客IDを取得
         code = request.session.pop("seartch_customer_code",None)
@@ -106,7 +106,7 @@ def CustomerSearch(request):
         'customer':customer,
         'error_message':error_message
     }
-        
+
     return render(request,"psys/CustomerSearch.html",context)
 
 # 確認用簡易ログアウト
