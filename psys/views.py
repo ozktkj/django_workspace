@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from functools import wraps
-from .forms import CustomerSearchForm,LoginForm
+from .forms import CustomerSearchForm,LoginForm,CustomerRegistForm
 from .models import Customer,Employee
 
 # ログインチェック関数
@@ -113,3 +113,19 @@ def CustomerSearch(request):
 def logout(request):
     request.session.flush()
     return redirect("psys:login")
+
+@employee_auth_required
+def CustomerRegist(request):
+    if request.method == 'POST':
+        form = CustomerRegistForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('')  # 保存後のリダイレクト先URL名
+
+    else:
+        form = CustomerRegistForm()
+    context = {
+        "form":form,
+        "title":"Regist",
+        }
+    return render(request,"psys/CustomerRegist.html",context)

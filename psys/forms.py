@@ -1,5 +1,5 @@
 from django import forms
-from .models import Employee
+from .models import Employee,Customer
 
 # 得意先検索フォーム
 class CustomerSearchForm(forms.Form):
@@ -36,3 +36,9 @@ class LoginForm(forms.Form):
             'placeholder': ''
         })
     )
+
+# 得意先登録
+class CustomerRegistForm(forms.ModelForm):
+    class Meta:
+        model = Customer
+        fields = ["customer_name", "customer_telno", "customer_postalcode", "customer_address"]
