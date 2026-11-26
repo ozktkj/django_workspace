@@ -11,5 +11,6 @@ urlpatterns = [
     path('CustomerManagementMenu',views.CustomerManagementMenu,name='customer_management_menu'),
     path('CustomerSearch',views.CustomerSearch,name='CustomerSearch'),
     path('CustomerRegist',views.CustomerRegist, name="CustomerRegist"),
+    path('CustomerRegistDone',views.CustomerRegistDone,name="CustomerRegistDone")
 
 ]

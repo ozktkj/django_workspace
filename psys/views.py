@@ -1,9 +1,10 @@
+from django.db import IntegrityError, transaction
 from django.shortcuts import render,redirect
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from functools import wraps
 from .forms import CustomerSearchForm,LoginForm,CustomerRegistForm
-from .models import Customer,Employee
+from .models import Customer,Employee,CustomerNumbering
 
 # ログインチェック関数
 def employee_auth_required(view_func):
@@ -119,9 +120,29 @@ def CustomerRegist(request):
     if request.method == 'POST':
         form = CustomerRegistForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('')  # 保存後のリダイレクト先URL名
+            try:
+                with transaction.atomic():#トランザクション処理
+                    # 採番テーブルから最新番号を取得
+                    seq = CustomerNumbering.objects.select_for_update().get()
+                    next_num = seq.customer_code + 1
+                    next_code = f"RA{next_num:04d}"
 
+                    # 採番テーブルを更新(主キーがないため再検索してアップデート)
+                    CustomerNumbering.objects.filter(
+                        customer_code=seq.customer_code
+                    ).update(customer_code=next_num)
+
+                    # 得意先に追加
+                    customer = form.save(commit=False) #得意先を生成(コミットしない)
+                    customer.customer_code = next_code #得意先番号を設定
+                    customer.delete_flag = 0 #論理削除をFalse
+                    customer.discount_rate = 0 #割引率をゼロ
+                    customer.save(force_insert=True) #INSERTを強制
+                    form.save_m2m() #commit=Falseの解消
+                    return redirect('psys:CustomerRegistDone')
+
+            except IntegrityError as e:# DB整合性エラー
+                form.add_error(None, f"登録処理でエラーが発生: {e}")
     else:
         form = CustomerRegistForm()
     context = {
@@ -129,3 +150,8 @@ def CustomerRegist(request):
         "title":"Regist",
         }
     return render(request,"psys/CustomerRegist.html",context)
+
+# 仕様にはないがPRGパターンのための完了画面
+@employee_auth_required
+def CustomerRegistDone(request):
+    return render(request,'psys/CustomerRegistDone.html')
